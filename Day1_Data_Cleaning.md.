@@ -1,0 +1,49 @@
+# 📅 Day 1: Data Cleaning & ETL (Extract, Transform, Load)
+
+## 🎯 Project Objective
+To analyze the relationship between social media usage, burnout, and productivity using a dataset of 30,000 employees.
+**Day 1 Goal:** Transform the raw, messy CSV data into a clean, analysis-ready format using **Power BI Power Query**.
+
+## 🛠️ Tools & Techniques Used
+- **Power BI Desktop** (Power Query Editor)
+- **M-Language (Power Query Formulas)**
+- **Statistical Imputation** (Handling missing values)
+- **Data Profiling**
+
+## 📋 Step-by-Step Cleaning Process
+
+### 1. Data Profiling (The "Health Check")
+Before making any changes, I inspected the column quality to identify errors.
+- **Issue Found:** The `daily_social_media_time` column had significant missing values (`null`).
+- **Issue Found:** The `actual_productivity_score` column also contained gaps.
+- **Data Type Check:** Verified that numerical columns like `work_hours_per_day` were correctly formatted as Decimals, not Text.
+
+### 2. Handling Missing Values (The Strategy)
+I had to decide how to fill the `null` values.
+- **❌ Rejected Strategy:** **Forward Fill / Backward Fill (F-fill/B-fill)**.
+    - *Reason:* Since this is survey data from *different* individuals, copying data from one person (Row A) to another (Row B) would be statistically incorrect and lead to false correlations.
+- **✅ Selected Strategy:** **Mean Imputation**.
+    - *Reason:* Replacing nulls with the column **Average (Mean)** preserves the overall distribution of the data without introducing bias.
+
+### 3. Execution (The "Pro" Approach)
+Instead of hard-coding a static number, I used a dynamic approach in Power Query to ensure the cleaning step remains valid even if the data updates.
+
+**Step:** Replaced `null` values in `daily_social_media_time` with the column average (~3.11).
+> *Technical Note:* Used the `List.Average` function in Power Query M-code to dynamically calculate this value during the transformation step.
+
+### 4. Data Type Standardization
+Ensured strict typing for all critical columns to prevent calculation errors in DAX later.
+- `job_type`: Set to **Text**.
+- `age`: Set to **Whole Number**.
+- `uses_focus_apps`: Set to **Boolean (True/False)**.
+
+## 📉 Before vs. After Transformation
+
+| Feature | Raw Data | Cleaned Data |
+| :--- | :--- | :--- |
+| **Missing Values** | ~10% Nulls | 0% Nulls (Imputed) |
+| **Consistency** | Mixed Types | Standardized |
+| **Readiness** | Unsafe for Math | Ready for DAX |
+
+## 💡 Key Learning
+"Data Cleaning is not just about fixing errors; it's about making statistical decisions." Choosing **Mean Imputation** over F-Fill ensures that my analysis of productivity trends remains honest and accurate.
