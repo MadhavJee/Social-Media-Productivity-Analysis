@@ -1,0 +1,77 @@
+# 📊 Day 3: Power BI Dashboard Development
+
+---
+
+### Objective
+After modeling the data on Day 2 with DAX measures and calculated columns, Day 3 focused on **Dashboard Development**—transforming raw metrics into actionable visual insights that tell a clear story about social media's impact on productivity and burnout.
+
+---
+
+### Tools Used
+- **Power BI Desktop** (Report View & Visualizations Pane)
+- **DAX Measures** (for dynamic calculations)
+- **Custom Visuals** (scatter plots, heatmaps, gauges)
+- **Slicers & Filters** (for interactive exploration)
+
+---
+
+### Dashboard Structure Created
+
+#### 1. Overview Dashboard
+- **KPI Cards:** 
+  - Avg. Productivity Score: 72.4
+  - Avg. Social Media Hours: 3.2
+  - Burnout Rate: 34%
+- **Trend Line:** Monthly productivity vs. social media usage
+- **Department Bar Chart:** Productivity by team
+
+#### 2. Correlation Analysis Page
+- **Scatter Plot:** Social Media Hours vs. Productivity Score
+  - Color-coded by Burnout Level
+  - Trend line shows negative correlation
+- **Heatmap:** Department × Burnout Level intensity
+- **Line Chart:** Productivity decline with increased social media hours
+
+#### 3. Demographic Insights Page
+- **Donut Chart:** Burnout distribution by department
+- **Clustered Bar Chart:** Productivity by Age Group (Gen Z, Millennials, Gen X, Boomers)
+- **Drill-Through Table:** Top 10 most affected employees
+
+#### 4. Interactive Controls
+- Department slicer (multi-select)
+- Age group filter
+- Burnout level toggle (Low/Medium/High)
+- Date range selector
+
+---
+
+### DAX Measures Used in Visuals
+
+#### 1. Productivity Trend (Moving Average)
+Productivity MA =
+CALCULATE(
+AVERAGE('Data'[Productivity_Score]),
+DATESINPERIOD('Date'[Date], LASTDATE('Date'[Date]), -7, DAY)
+)
+
+#### 2. Burnout Rate %
+Burnout Rate =
+DIVIDE(
+CALCULATE(COUNTROWS('Data'), 'Data'[Burnout_Level] = "High"),
+COUNTROWS('Data'),
+0
+)
+
+#### 3. Social Media Usage Category
+Usage Category =
+IF(
+'Data'[Social_Media_Hours] > 4, "High",
+IF('Data'[Social_Media_Hours] > 2, "Medium", "Low")
+)
+
+---
+
+### Key Insights Visualized
+- **Negative Correlation:** Employees with >4 hours of social media use show 28% lower productivity
+- **Department Variance:** Marketing shows highest burnout (47%) vs. Engineering (22%)
+- **Age Trend:** Gen Z employees average 4.1 hours social media use vs. Boomers at 1.8 hours
